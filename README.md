@@ -1,2 +1,2 @@
-# splitfood backend API
-Api that controls the operation of the splitfood app
+# splitfood-backend
+Back-End application for the Facens project SplitFood.
