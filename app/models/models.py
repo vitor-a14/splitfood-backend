@@ -1,7 +1,14 @@
-from sqlalchemy import DECIMAL, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
 from ..db.db import Base
+
+association_table = Table(
+    'group_users', 
+    Base.metadata,   
+    Column("user_cpf", ForeignKey("user.cpf")),
+    Column("group_id", ForeignKey("group.id")),
+)
 
 class User(Base):
     __tablename__ = 'user'
@@ -11,4 +18,13 @@ class User(Base):
     email = Column(String(length=100), nullable=False)
     password = Column(String(length=100), nullable=False)
     role = Column(String(length=100), nullable=False)
+    
+class Group(Base):
+    __tablename__ = 'group'
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(length=100), nullable=False)
+    description = Column(String(length=100), nullable=False)
+    creator_id = Column(String(length=11), ForeignKey("user.cpf"))
+    participants = relationship("User", secondary=association_table)
+    
