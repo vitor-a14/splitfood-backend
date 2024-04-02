@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql/data
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "3306:3306"
+
+  splitfood-api:
+    image: splitfood-api
+    command: uvicorn main:app --host=0.0.0.0 --port=8000 --reload
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - APP_NAME=fastapi_docker
+      - DB_USERNAME=root
+      - DB_PASSWORD=example
+      - DB_PORT=3306
+      - DB_NAME=splitfood
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
