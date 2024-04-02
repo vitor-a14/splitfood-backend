@@ -1,7 +1,7 @@
 from typing import List
 
-from app.models.models import User
-from app.repositories.user_repository import UserRepository
+from ...models.models import User
+from ...repositories.user_repository import UserRepository
 from fastapi import APIRouter, Depends, status, HTTPException
 
 from .schemas import UserSchema

@@ -1,5 +1,5 @@
-from app.db.db import Session, get_db
-from app.models.models import User
+from ..db.db import Session, get_db
+from ..models.models import User
 from fastapi import Depends
 
 from .base_repository import BaseRepository

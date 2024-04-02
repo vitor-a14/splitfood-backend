@@ -1,4 +1,4 @@
-from app.models.models import Base
+from ..models.models import Base
 
 
 class BaseRepository:
