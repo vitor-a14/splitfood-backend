@@ -14,9 +14,27 @@ router = APIRouter()
 @router.post('/', response_model=GroupSchema,
              status_code=status.HTTP_201_CREATED)
 def create(group: GroupSchema,
-           repository: GroupRepository = Depends()):
+           repository: GroupRepository = Depends(),
+           userRepository: UserRepository = Depends()):
+    
+    user = userRepository.get_by_id(group.creator_id)
+    if user == None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid CPF")
+    
+    currentGroupsForCreator = repository.get_by_creator_id(group.creator_id)
+    
+    if currentGroupsForCreator != None:
+        if has_active_group(currentGroupsForCreator):
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already has an active group")
+    
     return repository.create(Group(**group.dict()))
 
+
+def has_active_group(groups):
+    for group in groups:
+        if group.status == 'active':
+            return True
+    return False
 
 @router.get('/', response_model=List[GroupSchema])
 def read(repository: GroupRepository = Depends()):
@@ -25,7 +43,7 @@ def read(repository: GroupRepository = Depends()):
 
 @router.get('/{id}', response_model=GroupSchema)
 def get_by_id(id: int, repository: GroupRepository = Depends()):
-    return repository.get_by_id(int)
+    return repository.get_by_id(id)
 
 
 @router.put('/{id}', response_model=GroupSchema)
@@ -50,6 +68,18 @@ def addParticipant(userId: str, id: int,
     
     return repository.create(group)
 
+@router.put('/{id}/deactivate', response_model=GroupSchema)
+def deactivateGroup(id: int,
+           repository: GroupRepository = Depends()):
+    
+    group = repository.get_by_id(id)
+    
+    if group == None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Group ID")
+    
+    group.status = 'inactive'
+    
+    return repository.create(group)
 
 @router.delete('/{id}')
 def delete(id: int, repository: GroupRepository = Depends()):
