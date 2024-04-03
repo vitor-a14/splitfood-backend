@@ -28,3 +28,13 @@ class Group(Base):
     creator_id = Column(String(length=11), ForeignKey("user.cpf"), nullable=False)
     participants = relationship("User", secondary=association_table)
     
+class Item(Base):
+    __tablename__ = 'item'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(length=100), nullable=False)
+    group_id = Column(Integer, ForeignKey("group.id"), nullable=False)
+    owner_id = Column(String(length=11), ForeignKey("user.cpf"), nullable=False)
+    owner = relationship("User")
+    group = relationship("Group")
+    value = Column(Integer, nullable=False)

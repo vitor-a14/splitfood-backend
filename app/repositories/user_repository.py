@@ -9,5 +9,5 @@ class UserRepository(BaseRepository):
     def __init__(self, session: Session = Depends(get_db)) -> None:
         super().__init__(session, User)
 
-    def get_by_id(self, cpf: int):
+    def get_by_id(self, cpf: str):
         return self.session.query(self.model).filter_by(cpf=cpf).first()

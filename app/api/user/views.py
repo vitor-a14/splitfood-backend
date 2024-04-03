@@ -33,9 +33,9 @@ def read(repository: UserRepository = Depends()):
     return repository.get_all()
 
 
-@router.get('/{id}', response_model=List[UserSchema])
-def get_by_id(id: int, repository: UserRepository = Depends()):
-    return repository.get_by_id(int)
+@router.get('/{id}', response_model=UserSchema)
+def get_by_id(id: str, repository: UserRepository = Depends()):
+    return repository.get_by_id(id)
 
 
 @router.put('/{id}', response_model=UserSchema)
