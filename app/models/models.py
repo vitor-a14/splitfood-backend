@@ -25,6 +25,6 @@ class Group(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(length=100), nullable=False)
     description = Column(String(length=100), nullable=False)
-    creator_id = Column(String(length=11), ForeignKey("user.cpf"))
+    creator_id = Column(String(length=11), ForeignKey("user.cpf"), nullable=False)
     participants = relationship("User", secondary=association_table)
     
