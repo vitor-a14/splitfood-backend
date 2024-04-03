@@ -23,7 +23,7 @@ def read(repository: GroupRepository = Depends()):
     return repository.get_all()
 
 
-@router.get('/{id}', response_model=List[GroupSchema])
+@router.get('/{id}', response_model=GroupSchema)
 def get_by_id(id: int, repository: GroupRepository = Depends()):
     return repository.get_by_id(int)
 
