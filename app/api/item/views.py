@@ -14,6 +14,10 @@ router = APIRouter()
 def create(item: ItemSchema,
            repository: ItemRepository = Depends()):
     
+    if item.value < 100:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='Item value must be greater than R$ 1.00')
+    
     return repository.create(Item(**item.dict()))
 
 
