@@ -47,3 +47,4 @@ def update(user: UserSchema, id: int,
 @router.delete('/{id}')
 def delete(id: int, repository: UserRepository = Depends()):
     return repository.delete(id)
+
