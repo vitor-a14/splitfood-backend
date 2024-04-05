@@ -13,4 +13,5 @@ class Settings(BaseSettings):
         return f'mysql+pymysql://{self.db_username}:{self.db_password}@db:{self.db_port}/{self.db_name}'
 
 
+
 settings = Settings()
